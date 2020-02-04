@@ -9,6 +9,7 @@ import com.dicoding.picodiploma.techinicaltestcodex.data.source.remote.RemoteRep
 import com.dicoding.picodiploma.techinicaltestcodex.data.source.remote.response.StoryCommentResponse
 import com.dicoding.picodiploma.techinicaltestcodex.data.source.remote.response.UserStoryResponse
 import com.dicoding.picodiploma.techinicaltestcodex.vo.Resource
+import kotlinx.coroutines.Job
 
 class MainDataRepository private constructor(
     private val remote: RemoteRepository
@@ -32,7 +33,7 @@ class MainDataRepository private constructor(
         }
     }
 
-    override fun getTopStoryData(): LiveData<Resource<List<UserStoryEntity>>> {
+    override fun getTopStoryData(job: Job): LiveData<Resource<List<UserStoryEntity>>> {
         return object : NetworkBounceResource<List<UserStoryEntity>, List<UserStoryResponse>>() {
 
             override fun loadFromDB(): LiveData<List<UserStoryEntity>> {
@@ -46,7 +47,7 @@ class MainDataRepository private constructor(
             }
 
             override fun createCall(): LiveData<ApiResponse<List<UserStoryResponse>>>? {
-                return remote.getTopStoryRepo()
+                return remote.getTopStoryRepo(job)
             }
 
             override fun needSaveToDB(): Boolean {
@@ -67,7 +68,7 @@ class MainDataRepository private constructor(
                             "${it.descendants}",
                             it.id,
                             it.kids,
-                            "${it.descendants}",
+                            "${it.score}",
                             it.title,
                             false
                         )
@@ -84,7 +85,7 @@ class MainDataRepository private constructor(
 
     }
 
-    override fun getCommentStoryData(list: List<Int>): LiveData<Resource<List<UserCommentEntity>>> {
+    override fun getCommentStoryData(list: List<Int>, job: Job): LiveData<Resource<List<UserCommentEntity>>> {
         return object :
             NetworkBounceResource<List<UserCommentEntity>, List<StoryCommentResponse>>() {
             override fun loadFromDB(): LiveData<List<UserCommentEntity>> {
@@ -98,7 +99,7 @@ class MainDataRepository private constructor(
             }
 
             override fun createCall(): LiveData<ApiResponse<List<StoryCommentResponse>>>? {
-                return remote.getStoryCommentRepo(list)
+                return remote.getStoryCommentRepo(list, job)
             }
 
             override fun needSaveToDB(): Boolean {

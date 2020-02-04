@@ -1,6 +1,5 @@
 package com.dicoding.picodiploma.techinicaltestcodex.ui.main
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,10 +10,11 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.dicoding.picodiploma.techinicaltestcodex.R
 import com.dicoding.picodiploma.techinicaltestcodex.databinding.MainFragmentBinding
-import com.dicoding.picodiploma.techinicaltestcodex.ui.detail.DetailActivity
+import com.dicoding.picodiploma.techinicaltestcodex.ui.MainViewModel
 import com.dicoding.picodiploma.techinicaltestcodex.utils.invisible
 import com.dicoding.picodiploma.techinicaltestcodex.utils.visible
 import com.dicoding.picodiploma.techinicaltestcodex.viewmodel.ViewModelFactory
@@ -26,11 +26,7 @@ class MainFragment : Fragment() {
     private lateinit var binding: MainFragmentBinding
     private lateinit var mainAdapter: MainAdapter
 
-
     companion object {
-
-        const val EXTRA_TITLE = "EXTRA_TITLE"
-
         fun initViewModel(activity: FragmentActivity): MainViewModel? {
             val factory = ViewModelFactory.getInstance(activity.application)
             return factory?.let { ViewModelProvider(activity, it).get(MainViewModel::class.java) }
@@ -52,10 +48,12 @@ class MainFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
         mainViewModel = initViewModel(requireActivity())
 
-        mainAdapter = MainAdapter {
-            val intent = Intent(context, DetailActivity::class.java)
-            intent.putExtra(DetailActivity.EXTRA_STORY, it)
-            startActivityForResult(intent, DetailActivity.REQUEST_CODE)
+        mainAdapter = MainAdapter { view, data ->
+
+            val toDetailFragmentDirections =
+                MainFragmentDirections.actionMainFragmentToDetailFragment(data)
+            toDetailFragmentDirections.userStory = data
+            view.findNavController().navigate(toDetailFragmentDirections)
         }
 
         binding.rvUserStory.apply {
@@ -65,6 +63,7 @@ class MainFragment : Fragment() {
         }
 
         populateData()
+        populateFavoriteTitle()
     }
 
     private fun populateData() {
@@ -91,12 +90,13 @@ class MainFragment : Fragment() {
         })
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == DetailActivity.REQUEST_CODE) {
-            if (resultCode == DetailActivity.RESULT_ADD) {
-                val title = data?.getStringExtra(EXTRA_TITLE)
-                title?.let { binding.tvTitleFavorite.text = it }
+    private fun populateFavoriteTitle() {
+        val data = mainViewModel?.getUserStoryLive()
+        data?.let {
+            if (it.favorite) {
+                binding.tvTitleFavorite.text = it.title
+            } else {
+                binding.tvTitleFavorite.text = getString(R.string.no_data)
             }
         }
     }

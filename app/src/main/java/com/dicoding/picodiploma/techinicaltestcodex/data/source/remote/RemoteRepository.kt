@@ -26,11 +26,11 @@ class RemoteRepository private constructor( private val apiEndpoint: ApiEndpoint
         }
     }
 
-    fun getTopStoryRepo(): LiveData<ApiResponse<List<UserStoryResponse>>> {
+    fun getTopStoryRepo(job: Job): LiveData<ApiResponse<List<UserStoryResponse>>> {
 
         val storyListLive = MutableLiveData<ApiResponse<List<UserStoryResponse>>>()
         val storyList = mutableListOf<UserStoryResponse>()
-        CoroutineScope(Dispatchers.IO + exception).launch{
+        CoroutineScope(Dispatchers.IO + exception + job).launch{
             val listIdStory = async { apiEndpoint.getTopStoryIdByApi() }
             for (i in listIdStory.await().indices) {
                 storyList.add(apiEndpoint.getStoryByApi(listIdStory.await()[i]))
@@ -48,11 +48,14 @@ class RemoteRepository private constructor( private val apiEndpoint: ApiEndpoint
         return storyListLive
     }
 
-    fun getStoryCommentRepo(list: List<Int>): LiveData<ApiResponse<List<StoryCommentResponse>>> {
+    fun getStoryCommentRepo(list: List<Int>, job: Job): LiveData<ApiResponse<List<StoryCommentResponse>>> {
         val commentListLive = MutableLiveData<ApiResponse<List<StoryCommentResponse>>>()
-
-        CoroutineScope(Dispatchers.IO + exception).launch {
-            val listComment = apiEndpoint.getStoryComment(list.first())
+        val listComment = mutableListOf<StoryCommentResponse>()
+        CoroutineScope(Dispatchers.IO + exception + job).launch {
+            for (i in list.indices) {
+                listComment.add(apiEndpoint.getStoryComment(list[i]))
+                if (i >= 5) break
+            }
 
             try {
                 commentListLive.postValue(ApiResponse.success(listComment))

@@ -14,6 +14,6 @@ interface ApiEndpoint {
     suspend fun getStoryByApi(@Path("storyId") storyId: Int): UserStoryResponse
 
     @GET("item/{commentId}.json?print=pretty")
-    suspend fun getStoryComment(@Path("commentId") commentId: Int): List<StoryCommentResponse>
+    suspend fun getStoryComment(@Path("commentId") commentId: Int): StoryCommentResponse
 
 }

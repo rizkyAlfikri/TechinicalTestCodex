@@ -1,15 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".ui.MainActivity">
 
     <data>
 
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/coordinator_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/coordinator_layout">
+        android:layout_height="match_parent">
 
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/appBarLayout"
@@ -22,22 +24,22 @@
                 android:id="@+id/collapse_layout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                app:layout_scrollFlags="snap|enterAlways|scroll"
-                android:fitsSystemWindows="true">
+                android:fitsSystemWindows="true"
+                app:layout_scrollFlags="snap|enterAlways|scroll">
 
                 <androidx.appcompat.widget.Toolbar
                     android:id="@+id/toolbar"
                     android:layout_width="match_parent"
-                    app:layout_collapseMode="pin"
-                    android:layout_height="?attr/actionBarSize">
+                    android:layout_height="?attr/actionBarSize"
+                    app:layout_collapseMode="pin">
 
                     <TextView
                         android:id="@+id/tv_toolbar_title"
+                        style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:text="@string/app_name"
-                        style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
-                        android:gravity="center" />
+                        android:gravity="center"
+                        android:text="@string/app_name" />
 
                 </androidx.appcompat.widget.Toolbar>
 

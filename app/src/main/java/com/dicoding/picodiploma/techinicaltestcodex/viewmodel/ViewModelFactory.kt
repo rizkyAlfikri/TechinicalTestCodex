@@ -6,8 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.dicoding.picodiploma.techinicaltestcodex.data.source.MainDataRepository
 import com.dicoding.picodiploma.techinicaltestcodex.di.Injection
-import com.dicoding.picodiploma.techinicaltestcodex.ui.detail.DetailViewModel
-import com.dicoding.picodiploma.techinicaltestcodex.ui.main.MainViewModel
+import com.dicoding.picodiploma.techinicaltestcodex.ui.MainViewModel
 
 class ViewModelFactory private constructor(private val mainDataRepository: MainDataRepository) :
     ViewModelProvider.NewInstanceFactory() {
@@ -31,8 +30,9 @@ class ViewModelFactory private constructor(private val mainDataRepository: MainD
     @NonNull
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         return when{
-            modelClass.isAssignableFrom(MainViewModel::class.java) -> MainViewModel(mainDataRepository) as T
-            modelClass.isAssignableFrom(DetailViewModel::class.java) -> DetailViewModel(mainDataRepository) as T
+            modelClass.isAssignableFrom(MainViewModel::class.java) -> MainViewModel(
+                mainDataRepository
+            ) as T
             else -> throw IllegalArgumentException("Unknown ViewModel Class ${modelClass.name}")
         }
     }

@@ -1,6 +1,7 @@
 package com.dicoding.picodiploma.techinicaltestcodex.ui.main
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -9,7 +10,7 @@ import com.dicoding.picodiploma.techinicaltestcodex.data.source.local.entity.Use
 import com.dicoding.picodiploma.techinicaltestcodex.databinding.ItemUserStoryBinding
 import com.dicoding.picodiploma.techinicaltestcodex.ui.main.MainAdapter.MainViewHolder
 
-class MainAdapter(private val listener: (UserStoryEntity) -> Unit) : RecyclerView.Adapter<MainViewHolder>() {
+class MainAdapter(private val listener: (View, UserStoryEntity) -> Unit) : RecyclerView.Adapter<MainViewHolder>() {
 
     private val listUser = mutableListOf<UserStoryEntity>()
 
@@ -42,9 +43,9 @@ class MainAdapter(private val listener: (UserStoryEntity) -> Unit) : RecyclerVie
     inner class MainViewHolder(private val binding: ItemUserStoryBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bindData(user: UserStoryEntity, listener: (UserStoryEntity) -> Unit) {
+        fun bindData(user: UserStoryEntity, listener: (View, UserStoryEntity) -> Unit) {
             binding.userStoryEntity = user
-            binding.root.setOnClickListener { listener(user)  }
+            binding.root.setOnClickListener { listener(binding.root, user)  }
         }
     }
 

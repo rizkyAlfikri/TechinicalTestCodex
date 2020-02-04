@@ -1,9 +1,9 @@
-package com.dicoding.picodiploma.techinicaltestcodex
+package com.dicoding.picodiploma.techinicaltestcodex.ui
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
-import com.dicoding.picodiploma.techinicaltestcodex.ui.main.MainViewModel
+import com.dicoding.picodiploma.techinicaltestcodex.R
 import com.dicoding.picodiploma.techinicaltestcodex.viewmodel.ViewModelFactory
 
 class MainActivity : AppCompatActivity() {
@@ -21,7 +21,10 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main_activity)
 
-        mainViewModel = iniViewModel(this)
+        mainViewModel =
+            iniViewModel(
+                this
+            )
     }
 
 }

@@ -7,9 +7,9 @@ import kotlinx.android.parcel.Parcelize
 data class UserStoryEntity(
     var author: String?,
     var descendants: String?,
-    var idStory: Int?,
+    var idStory: Int,
     var kids: List<Int>?,
     var score: String?,
     var title: String?,
-    var favorite: Boolean?
+    var favorite: Boolean
 ) : Parcelable
