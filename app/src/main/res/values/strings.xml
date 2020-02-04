@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">TechinicalTestCodex</string>
+    <string name="title">Title</string>
+    <string name="score">Score:</string>
+    <string name="author_exp">Putin</string>
+    <string name="total_comments">Total Comments:</string>
+    <string name="favorite">Favorite</string>
+    <string name="strip">-</string>
+    <string name="kids">Kids:</string>
+</resources>
